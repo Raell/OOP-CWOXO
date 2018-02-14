@@ -10,6 +10,7 @@ import uk.ac.bris.cs.oxo.Spectator;
 import static java.util.Objects.requireNonNull;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class OXO implements OXOGame, Consumer<Move> {
@@ -48,6 +49,45 @@ public class OXO implements OXOGame, Consumer<Move> {
             // TODO
             Player player = (currentSide == Side.CROSS) ? crossSide : noughtSide;
             player.makeMove(this, validMoves(), this);
+            Side win = winner();
+    }
+    
+    private Side winner(){
+        
+        for (int i = 0; i < size; i++) {
+            Cell previousC = matrix.row(i).get(0);
+            for(Cell c : matrix.row(i)) {
+                if(previousC == c) {
+                    
+                    return c.side().orElse(null);
+                    
+                }
+                
+                else break;
+                previousC = c;
+            }
+        }
+        
+        for (int i = 0; i < size; i++) {
+            Cell previousC = matrix.column(i).get(0);
+            for(Cell c : matrix.column(i)) {
+                if(previousC == c) {
+                    if (i == size - 1) return c.side().orElse(null);
+                    else previousC = c;
+                }
+                else break;
+            }
+        }
+        
+        Cell previousC = matrix.mainDiagonal().get(0);
+        for (Cell c : matrix.mainDiagonal()) {
+            if(previousC == c) {
+                    if (c.) return c.side().orElse(null);
+                }
+                else break;
+        }
+        
+        return null;
     }
 
     @Override
